@@ -14,7 +14,8 @@ print('TensorFlow Version: {}'.format(tf.__version__))
 if not tf.test.gpu_device_name():
     warnings.warn('No GPU found. Please use a GPU to train your neural network.')
 else:
-    print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
+    pass
+    #print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
 
 
 def load_vgg(sess, vgg_path):
@@ -39,11 +40,13 @@ def load_vgg(sess, vgg_path):
     image_input = graph.get_tensor_by_name(vgg_input_tensor_name)
     keep_prob = graph.get_tensor_by_name(vgg_keep_prob_tensor_name)
     layer3_out = graph.get_tensor_by_name(vgg_layer3_out_tensor_name)
+    
     layer4_out = graph.get_tensor_by_name(vgg_layer4_out_tensor_name)
+    
     layer7_out = graph.get_tensor_by_name(vgg_layer7_out_tensor_name)
     
     return image_input, keep_prob, layer3_out, layer4_out, layer7_out
-tests.test_load_vgg(load_vgg, tf)
+#tests.test_load_vgg(load_vgg, tf)
 
 
 def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
@@ -56,13 +59,41 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :return: The Tensor for the last layer of output
     """
     # TODO: Implement function
+    print("vgg_layer7_out", vgg_layer7_out.get_shape().as_list())
     
     conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, strides=(1,1), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    tpose = tf.layers.conv2d_transpose(conv_1x1, num_classes, 4, strides=(2,2), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    pool_4 = tf.add(tpose, vgg_layer4_out)
-    tpose = tf.layers.conv2d_transpose(pool_4, num_classes, 4, strides=(2,2), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    pool_3 = tf.add(tpose, vgg_layer3_out)
-    output = tf.layers.conv2d_transpose(pool_3, num_classes, 16, strides=(8,8), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    print("conv_1x1", conv_1x1.get_shape().as_list())
+    
+    transposed_layer1 = tf.layers.conv2d_transpose(conv_1x1, num_classes, 4, strides=(2,2), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    print("transposed_layer1", transposed_layer1.get_shape().as_list())
+    
+    print("vgg_layer4_out", vgg_layer4_out.get_shape().as_list())
+    # vgg_layer4_out is [,,,512] and transposed_layer1 is [,,,2]
+    # so convolve vgg_layer4_out to that shape using a 1x1 kernel
+    vgg_layer4_reduced = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, strides=(1,1), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    print("vgg_layer4_reduced", vgg_layer4_reduced.get_shape().as_list())
+    
+    skip_with_layer4 = tf.add(transposed_layer1, vgg_layer4_reduced)
+    print("skip_with_layer4", skip_with_layer4.get_shape().as_list())
+    
+    transposed_layer2 = tf.layers.conv2d_transpose(skip_with_layer4, num_classes, 4, strides=(2,2), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    print("transposed_layer2", transposed_layer2.get_shape().as_list())
+    
+    print("vgg_layer3_out", vgg_layer3_out.get_shape().as_list())
+    # vgg_layer3_out is [,,,256] and transposed_layer2 is [,,,2]
+    # so convolve vgg_layer3_out to that shape using a 1x1 kernel
+    vgg_layer3_reduced = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, strides=(1,1), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    print("vgg_layer3_reduced", vgg_layer3_reduced.get_shape().as_list())
+    
+    skip_with_layer3 = tf.add(transposed_layer2, vgg_layer3_reduced)
+    print("skip_with_layer3", skip_with_layer3.get_shape().as_list())
+    
+    output = tf.layers.conv2d_transpose(skip_with_layer3, num_classes, 16, strides=(8,8), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    print("output", output.get_shape().as_list())
+    
+    print()
+    print()
+    print()
     return output
 tests.test_layers(layers)
 
@@ -77,7 +108,25 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     :return: Tuple of (logits, train_op, cross_entropy_loss)
     """
     # TODO: Implement function
-    return None, None, None
+    
+    # flatten nn_last_layer (the output so far), into a rank 2 tensor of num pixels x num classes
+    # this gives each pixel a "likelihood" that it is road/not road
+    logits = tf.reshape(nn_last_layer, (-1, num_classes))
+    
+    # flatten given labels as well
+    labels = tf.reshape(correct_label, (-1, num_classes))
+    
+    # do a softmax to convert these class "likelihoods" into true probabilities
+    # and then use cross entropy to see how well these predicitons match up with the true values
+    cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
+    
+    # run this error function through an optimizer for back propagation
+    train_op = tf.train.AdamOptimizer().minimize(cross_entropy_loss)
+    
+    print('***********************')
+    print()
+    print()    
+    return logits, train_op, cross_entropy_loss
 tests.test_optimize(optimize)
 
 
