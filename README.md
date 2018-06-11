@@ -1,11 +1,12 @@
 # Semantic Segmentation
 
 ### Introduction
-This project uses a Fully Convolutional Neural Network (FCN) to detect the road surface in images taken from the perspective of a driver in a car.  The process of detecting areas of an image belonging to a certain category such as road, vehicle, pedestrian, etc. is called <i>semantic segmentation<i/>.  This is to be distinguished from merely identifying an object with a bounding box.  In semantic segmentation, the actual shape of the object is identified pixel by pixel.
+This project uses a Fully Convolutional Neural Network (FCN) to detect the road surface in images taken from the perspective of a driver in a car.  The process of detecting areas of an image belonging to a certain category such as road, vehicle, pedestrian, etc. is called <i>semantic segmentation<i />.  This is to be distinguished from merely identifying an object with a bounding box.  In semantic segmentation, the actual shape of the object is identified pixel by pixel.
 
 <br/>
-<p align="center"> <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21.jpg" alt="biker"> </span> &nbsp;&nbsp;&nbsp; <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21_class.png" alt="biker"> </span> <br> <small><i>Left</i>: Input image. <i>Right</i>: It's semantic segmentation. <a href="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/index.html">Source.</a></small></p>
+<p align="center"> <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21.jpg" alt="biker"> </span> &nbsp;&nbsp;&nbsp; <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21_class.png" alt="biker"> </span> <br> <small><i>Left</i>: Input image. <i>Right<i />: It's semantic segmentation. <a href="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/index.html">Source.</a> (Courtesy of http://blog.qure.ai)</small></p>
 <br />
+I
 
 
 ### VGG16 Pre Trained Model
