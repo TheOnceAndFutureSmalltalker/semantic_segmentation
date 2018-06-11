@@ -30,19 +30,19 @@ The FCN is trained on the _________ dataset.  This consists of ___ number of ima
 ### Training
 The outputs from the model are measured against the labeled data using a cross entropy operation.  This cost function is then optimized per batch using an Adam optimizer.  
 
-The available hyper parameters for possible tuning are number of epochs, batch size, learning rate, keep probability, L2 regularization scale for each of the layers.  
+The available hyper parameters for possible tuning are number of epochs, batch size, learning rate, keep probability, and L2 regularization scale for each of the layers.  
 
 I maintained keep probability at 0.5 and all L2 regularization scales at 0.001 so these were not actually tuned.
 
-This left number of epochs, batch size, and learning rate as the parameters I actually tuned.
+This left the number of epochs, batch size, and learning rate as the actual tunable parameters.
 
-After some experimination with low number of epochs, I came to realize that the batch size could go very small, gaining a great deal of training out of each epoch.  I have no good explanation for this.
+After some experimination with just 2 epochs, I came to realize that the batch size could go very small, gaining a great deal of training out of each epoch.  I have no good explanation for this.
 
-Starting with a learning rate of 0.001 I kept pushing it smaller and smaller as I realized I needed to get my loss below 0.01 in order to get meaningful results.  I ended up with learning rates in range of 0.0002 and 0.0001 in order to converge on the small loss.
+Starting with a learning rate of 0.001 I kept pushing it smaller and smaller as I realized I needed to get my loss approximately 0.01 in order to get meaningful results.  I ended up with learning rates in range of 0.0002 and 0.0001 in order to converge adequately on the small loss.
 
 ### Results
 
-The following are intermediate and final results.
+The following are some intermediate and final results.
 
 Epochs = 10, batch size = 2, learning rante = 0.0002, loss = 0.074
 The road is definitely identified but there are too many false positives.
