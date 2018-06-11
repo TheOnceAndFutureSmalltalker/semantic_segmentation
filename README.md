@@ -1,19 +1,24 @@
 # Semantic Segmentation
 
 ### Introduction
-This project uses a Fully Convolutional Neural Network (FCN) to detect the road surface in images taken from the perspective of a driver in a car.  The process of detecting areas of an image belonging to a certain category such as road, vehicle, pedestrian, etc. is called <i>semantic segmentation</i>.  This is to be distinguished from merely identifying an object with a bounding box.  In semantic segmentation, the actual shape of the object is identified pixel by pixel.
+This project uses a Fully Convolutional Neural Network (FCN), implemented in TensorFlow, to detect the road surface in images taken from the perspective of a driver in a car.  The process of detecting areas of an image belonging to a certain category such as road, vehicle, pedestrian, etc. is called <i>semantic segmentation</i>.  This is to be distinguished from merely identifying an object with a bounding box.  In semantic segmentation, the actual shape of the object is identified pixel by pixel.  See example image below.
 
 <br/>
-<p align="center"> <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21.jpg" alt="biker"> </span> &nbsp;&nbsp;&nbsp; <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21_class.png" alt="biker"> </span> <br> <small><i>Left</i>: Input image. <i>Right<i />: It's semantic segmentation. <a href="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/index.html">Source.</a> (Courtesy of http://blog.qure.ai)</small></p>
+<p align="center"> <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21.jpg" alt="biker"> </span> &nbsp;&nbsp;&nbsp; <span> <img width="280px" src="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/images/21_class.png" alt="biker"> </span> <br> <small><i>Left</i>: Input image. <i>Right</i>: It's semantic segmentation. <a href="http://host.robots.ox.ac.uk/pascal/VOC/voc2012/segexamples/index.html">Source.</a> (Courtesy of http://blog.qure.ai)</small></p>
 <br />
-I
 
 
 ### VGG16 Pre Trained Model
-The encoder for the FCN is the VGG16 pretrained model.  VGG16 is a 16 layer CNN developed by ____________ and trained on the ________ dataset for image recognition.  The VGG16 pre-trained model is read in but only the layers leading up to, but not including, the first fully connected layer are used in the FCN for semantic segmentation.  
+The encoder for the FCN is the VGG16 pretrained model.  VGG16 is a 16 layer CNN developed by Visual Geometry Group and trained on the ImageNet dataset for image recognition.  It can recognize over 1000 distinct images.  The VGG16 pre-trained model is read in but only the layers leading up to, but not including, the first fully connected layer are used as the encoder of the FCN.  
+
+<br /><br />
+<p align="center">
+<img src="https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2017/08/08131808/temp7.png" width="470px" /><br /><b>VGG16 Architecture (Courtesy www.analyticsvidhya.com)</b></p>
+<br />
+
 
 ### Complete FCN Architecture
-The decoder for the FCN starts with a 1x1 convolution of layer 7 of VGG16.  This is then upsampled with a 4x4 kernel and stride of 1 thereby doubling the width and height of the output.  VGG16 layer 4 is then added as a skip layer.  This process of upsampling and skip layer is repeated with VGG16 layer 3, again doubling the dimensions.  Finally, the result is further upsampled with a 16x16 kernel and  stride of 8, thus multiplying the height and width by 8.  These are the final dimensions and the same as the original input image.  each original pixel is not represented by logits with a depth of 2, indicating road or no road.  These logits are run through a softmax to turn them into probabilities.
+The decoder for the FCN starts with a 1x1 convolution of layer 7 of VGG16.  This is then upsampled with a 4x4 kernel and stride of 2 thereby doubling the width and height of the output.  VGG16 layer 4 is then added as a skip layer.  This process of upsampling and skip layer is repeated with VGG16 layer 3, again doubling the dimensions.  Finally, the result is further upsampled with a 16x16 kernel and  stride of 8, thus multiplying the height and width by 8.  These are the final dimensions of the FCN and the same dimensions as the original input image.  Each original pixel can now represented by logits with a depth of 2, indicating the likelihood that the pixel is road or not road.  These logits are run through a softmax to turn them into probabilities.  This allows us to edit the original image by coloring all pixels identified as road in a chosen color - green in this case.
 
 
 ### Data
