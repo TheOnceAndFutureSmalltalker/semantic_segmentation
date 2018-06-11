@@ -22,9 +22,18 @@ The decoder for the FCN starts with a 1x1 convolution of layer 7 of VGG16.  This
 
 
 ### Data
-The FCN is trained on the _________ dataset.  This consists of ___ number of images of drive scenes in various scenarios.  The road segments of all of these images have already been pre-labeled by hand.  
+The FCN is trained on the [Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php).  This consists of 289 training and 290 test images of drive scenes in various scenarios. There are three basic types of road images:
 
-<< show a few examples >>
+* uu - urban unmarked (98/100)
+* um - urban marked (95/96)
+* umm - urban multiple marked lanes (96/94)
+
+The road segments of all of these images have already been pre-labeled by hand.  
+
+<br /><br />
+<p align="center">
+<img src="http://www.cvlibs.net/datasets/kitti/images/header_road.jpg"  /><br /><b>Typical Images (Courtesy http://www.cvlibs.net)</b></p>
+<br />
 
 
 ### Training
