@@ -55,17 +55,17 @@ My best results were with Epochs = 50, batch size = 2, learning rate = 0.0002.  
 
 <br /><br />
 <p align="center">
-<img src="https://github.com/TheOnceAndFutureSmalltalker/semantic_segmentation/blob/master/images/um_000022.png"  /><b>um_000022.png</b></p>
+<img src="https://github.com/TheOnceAndFutureSmalltalker/semantic_segmentation/blob/master/images/um_000022.png"  /><br /><b>um_000022.png</b></p>
 <br />
 
 <br /><br />
 <p align="center">
-<img src="https://github.com/TheOnceAndFutureSmalltalker/semantic_segmentation/blob/master/images/umm_000009.png"  /><b>umm_000009.png</b></p>
+<img src="https://github.com/TheOnceAndFutureSmalltalker/semantic_segmentation/blob/master/images/umm_000009.png"  /><br /><b>umm_000009.png</b></p>
 <br />
 
 <br /><br />
 <p align="center">
-<img src="https://github.com/TheOnceAndFutureSmalltalker/semantic_segmentation/blob/master/images/uu_000010.png"  /><b>um_000022.pnguu_000010.png</b></p>
+<img src="https://github.com/TheOnceAndFutureSmalltalker/semantic_segmentation/blob/master/images/uu_000010.png"  /><br /><b>um_000022.pnguu_000010.png</b></p>
 <br />
 
 
