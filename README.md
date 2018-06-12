@@ -45,22 +45,35 @@ I maintained keep probability at 0.5 and all L2 regularization scales at 0.001 s
 
 This left the number of epochs, batch size, and learning rate as the actual tunable parameters.
 
-After some experimination with just 2 epochs, I came to realize that the batch size could go very small, gaining a great deal of training out of each epoch.  I have no good explanation for this.
+After some experimentation with just 2 epochs, I came to realize that the batch size could go very small, gaining a great deal of training out of each epoch.  I have no good explanation for this.
 
-Starting with a learning rate of 0.001 I kept pushing it smaller and smaller as I realized I needed to get my loss approximately 0.01 in order to get meaningful results.  I ended up with learning rates in range of 0.0002 and 0.0001 in order to converge adequately on the small loss.
+Starting with a learning rate of 0.001 I kept pushing it smaller and smaller as I realized I needed to get my loss to converge on a smaller number less than 0.1.  This may seem like a large loss value but realize that this loss figure is not just the cross entropy but also includes the L2 regularization from six layers!  I ended up with learning rates in range of 0.0002 and 0.0001 in order to converge adequately on the this level of total loss.
 
 ### Results
 
-The following are some intermediate and final results.
+My best results were with Epochs = 50, batch size = 2, learning rate = 0.0002.  The total loss (cross entropy and all regularizations) was 0.092.  Below are a few of the better identifications of road segments in the test images.
 
-Epochs = 10, batch size = 2, learning rante = 0.0002, loss = 0.074
-The road is definitely identified but there are too many false positives.
+<br /><br />
+<p align="center">
+<img src="http://www.cvlibs.net/datasets/kitti/images/header_road.jpg"  /><br /><b>Typical Images (Courtesy http://www.cvlibs.net)</b></p>
+<br />
 
-Epochs = 20, batch size = 2, learning rate = 0.0002, loss = 0.032
-Improvement, but still too many false positives.
+<br /><br />
+<p align="center">
+<img src="http://www.cvlibs.net/datasets/kitti/images/header_road.jpg"  /><br /><b>Typical Images (Courtesy http://www.cvlibs.net)</b></p>
+<br />
 
-Epochs = 50, batch size = 2, learning rate = 0.0001. loss = 
-This looks reasonable, very few false positive pixels.
+<br /><br />
+<p align="center">
+<img src="http://www.cvlibs.net/datasets/kitti/images/header_road.jpg"  /><br /><b>Typical Images (Courtesy http://www.cvlibs.net)</b></p>
+<br />
+
+<br /><br />
+<p align="center">
+<img src="http://www.cvlibs.net/datasets/kitti/images/header_road.jpg"  /><br /><b>Typical Images (Courtesy http://www.cvlibs.net)</b></p>
+<br />
+
+
 
 
 ### Comments
